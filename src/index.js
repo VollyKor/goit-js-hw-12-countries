@@ -16,16 +16,21 @@ inputRef.addEventListener('input', debounce(() => {
     containerRef.innerHTML = ' '
 
     fetchCountries(countryName)
-        .then((data) => {
+        .then((countryList) => {
             containerRef.innerHTML = ' '
-            if (data.length > 10) {
+            if (countryList.status !== undefined && countryList.status !== 200){
+                containerRef.innerHTML = ' '
+                return notFoundError()
+            }
+
+            if (countryList.length > 10) {
                 tooManyError()
             }
-            else if (data.length === 1) {
-                markupItem(data)
+            else if (countryList.length === 1) {
+                markupItem(countryList)
             }
             else {
-                markupList(data)
+                markupList(countryList)
             }
         })
         .catch(error => console.log(error))
