@@ -6,7 +6,7 @@ import templateItem from './templates/template-2.hbs';
 
 import { tooManyError, notFoundError } from './js/notification'
 
-var debounce = require('lodash.debounce');
+import debounce from 'lodash.debounce';
 
 const containerRef = document.querySelector('.container');
 const inputRef = document.querySelector('.form-input');
@@ -15,10 +15,14 @@ inputRef.addEventListener('input', debounce(() => {
     const countryName = inputRef.value
     containerRef.innerHTML = ' '
 
+    if (!countryName) {
+        return
+    }
+
     fetchCountries(countryName)
         .then((countryList) => {
             containerRef.innerHTML = ' '
-            if (countryList.status !== undefined && countryList.status !== 200){
+            if (countryList.status !== undefined && countryList.status !== 200) {
                 containerRef.innerHTML = ' '
                 return notFoundError()
             }
